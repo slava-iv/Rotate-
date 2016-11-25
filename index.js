@@ -6,13 +6,19 @@ var dataSender = require('./data-sender.js')
 
 var FILE_SERVER_PORT = 8080;
 
+dataSender.init();
+
 fileServer(FILE_SERVER_PORT, function onFileRecieved(url) {
-  // Send screenshot to opencv.
-  var data = fileHandler.handle(url);
+    // Send screenshot to opencv.
+    var data = fileHandler.handle(url);
 
-  // Send opencv data to neural network.
-  var result = neuralNetwork.send(data);
+    // Send opencv data to neural network.
+    var result = neuralNetwork.send(data);
 
-  // Send neural network data to arduino.
-  dataSender.send(result);
+    if (typeof (result) != "number") {
+      console.log("result is not a number.");
+    }
+
+    // Send neural network data to arduino.
+    dataSender.send(result);
 });
