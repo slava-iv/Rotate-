@@ -1,0 +1,2 @@
+opencv_createsamples.exe positive.dat -vec samples.vec -w 50 -h 50
+opencv_traincascade.exe -data haar -vec samples.vec -bg negative.dat -numStages 16 -minhitrate 0.999 -maxFalseAlarmRate 0.4 -numPos 2 -numNeg 2 -w 50 -h 50 -mode ALL -precalcValBufSize 1024 -precalcIdxBufSize 1024
