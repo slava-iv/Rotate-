@@ -1,0 +1,24 @@
+{
+  "name": "rotate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vyacheslav-lonschakov/Rotate-.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vyacheslav-lonschakov/Rotate-/issues"
+  },
+  "homepage": "https://github.com/vyacheslav-lonschakov/Rotate-#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "opencv": "^v6.0.0"
+  }
+}
