@@ -19,6 +19,6 @@
   "homepage": "https://github.com/vyacheslav-lonschakov/Rotate-#readme",
   "dependencies": {
     "express": "^4.14.0",
-    "opencv": "^v6.0.0"
+    "opencv": "^6.0.0"
   }
 }
