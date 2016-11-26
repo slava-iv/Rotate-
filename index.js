@@ -9,9 +9,10 @@ var FILE_SERVER_PORT = 8080;
 dataSender.init();
 
 fileServer(FILE_SERVER_PORT, function onFileRecieved(url) {
-    // Send screenshot to opencv.
-    var data = fileHandler.handle(url);
+  // Send screenshot to opencv.
+  var getDataPromise = fileHandler.handle(url);
 
+  getDataPromise.then(function (data) {
     // Send opencv data to neural network.
     var result = neuralNetwork.send(data);
 
@@ -21,4 +22,5 @@ fileServer(FILE_SERVER_PORT, function onFileRecieved(url) {
 
     // Send neural network data to arduino.
     dataSender.send(result);
+  })
 });

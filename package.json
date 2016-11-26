@@ -23,7 +23,7 @@
     "express": "^4.14.0",
     "multer": "^1.2.0",
     "opencv": "^6.0.0",
-    "serialport": "^4.0.6"
+    "serialport": "^4.0.6",
     "brain.js": "0.7.0"
   }
 }
