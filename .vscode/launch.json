@@ -14,6 +14,13 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch test",
+      "program": "${workspaceRoot}\\specs\\test.js",
+      "cwd": "${workspaceRoot}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch port test",
       "program": "${workspaceRoot}\\specs\\port.js",
       "cwd": "${workspaceRoot}\\specs"
