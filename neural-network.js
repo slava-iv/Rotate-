@@ -5,6 +5,7 @@ var inputsNumber = paramsNumber + (2 * requiredPlatesNumber * 2)
 var lastState;
 function getInput(state) {
     // state = {
+    //     player: {x: 110, y: 20 },
     //     plates: [
     //         {
     //             x: 10,
@@ -12,10 +13,23 @@ function getInput(state) {
     //         },
     //         {}
     //     ],
-    //
+    //     score: "100",
     //     degree: 30 | 0 | 60,
     //     direct: 1 | 0
     // }
+
+    if (lastState != null && lastState.y < state.y) {
+        state.direct = +1
+    } else {
+        state.direct = -1;
+    }
+
+    state.plates.forEach(function(plate){
+        plate.x = plate.x - state.player.x;
+        plate.y = plate.y - state.player.y;
+    });
+
+
     var input = [];
     state.plates = state.plates.sort(function(a, b) {
         return a.y - b.y;
@@ -47,23 +61,25 @@ function getInput(state) {
 
     return input;
 }
+
 function getOutput(state) {
-    if (state.degree == 0) {
+    if (state.degree == -30) {
         return [1,0,0]
     }
-    if (state.degree == 30) {
+    if (state.degree == 0) {
         return [0,1,0]
     }
-    if (state.degree == 60) {
+    if (state.degree == 30) {
         return [0,0,1]
     }
 }
+
 var brain = require('brain.js');
 var net = new brain.NeuralNetwork();
 
-var send = function (data) {
-  console.log("send to neural network: " + JSON.stringify(data));
-    var input = getInput(s)
+var send = function (state) {
+  console.log("send to neural network: " + JSON.stringify(state));
+    var input = getInput(state);
 
     if (state.score > lastState.score) {
         net.train([{input: getInput(lastState), output: getOutput(state)}]);
@@ -72,6 +88,14 @@ var send = function (data) {
     var output = net.run(input);
     lastState = state;
 
+    if (output[0] > output[1] && output[0] > output[2]) {
+        return -30;
+    }
+    if (output[1] > output[2] && output[1] > output[0]) {
+        return 0;
+    }
+
+    return 30;
 };
 
 module.exports = {
