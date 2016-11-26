@@ -17,13 +17,12 @@ var handle = function (url) {
       var player = im.matchTemplate('./files/p1.jpg', 0);
       console.log("x:" + player[1] + " y:" + player[2]);
 
-      var matched = im.matchTemplate('./files/plate.jpg', 5)[0];
-
       var im_converted = im.clone();
 
       im_converted.convertGrayscale();
       im_converted.canny(0, 100);
-      im_converted.dilate(5);
+      im_converted.save('test.jpg');
+      im_converted.dilate(2);
 
       var contours = im_converted.findContours();
 
@@ -46,6 +45,7 @@ var handle = function (url) {
 
         var plateImage = im.crop(rect.x, rect.y, rect.width, rect.height);
 
+        //plateImage.
         plateImage.resize(1, 1);
 
         var plateAvgColor = plateImage.pixel();
