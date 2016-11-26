@@ -66,8 +66,8 @@ var handle = function (url) {
         im.drawContour(contours, i, [0, 0, 255]);
 
         data.plates.push({
-          x: rect[0],
-          y: rect[1]
+          x: rect.x,
+          y: rect.y
         });
       }
 
