@@ -18,26 +18,26 @@ function getInput(state) {
     //     direct: 1 | 0
     // }
 
-    if (lastState != null && lastState.y < state.y) {
-        state.direct = +1
+    if (lastState != null && lastState.player.y < state.player.y) {
+        state.direct = -1
     } else {
-        state.direct = -1;
+        state.direct = +1;
     }
 
-    state.plates.forEach(function(plate){
+    state.plates.forEach(function (plate) {
         plate.x = plate.x - state.player.x;
         plate.y = plate.y - state.player.y;
     });
 
 
     var input = [];
-    state.plates = state.plates.sort(function(a, b) {
+    state.plates = state.plates.sort(function (a, b) {
         return a.y - b.y;
     });
 
-    for (var i = 0 ; i < state.plates.length && state.plates[i].y < 0 ; i++ ) {}
+    for (var i = 0; i < state.plates.length && state.plates[i].y < 0; i++) { }
 
-    for (var j = 0 ; j < requiredPlatesNumber; j++ ) {
+    for (var j = 0; j < requiredPlatesNumber; j++) {
         if (state.plates[i + j] != null) {
             input[j * 4] = state.plates[i + j].x;
             input[j * 4 + 1] = state.plates[i + j].y;
@@ -56,21 +56,21 @@ function getInput(state) {
 
     }
 
-    input[inputsNumber - 2] = state.degree;
-    input[inputsNumber - 1] = state.direct;
+  //  input[inputsNumber - 2] = state.degree || 0;
+   // input[inputsNumber - 1] = state.direct || 1;
 
     return input;
 }
 
 function getOutput(state) {
     if (state.degree == -30) {
-        return [1,0,0]
+        return [1, 0, 0]
     }
     if (state.degree == 0) {
-        return [0,1,0]
+        return [0, 1, 0]
     }
     if (state.degree == 30) {
-        return [0,0,1]
+        return [0, 0, 1]
     }
 }
 
@@ -78,26 +78,50 @@ var brain = require('brain.js');
 var net = new brain.NeuralNetwork();
 
 var send = function (state) {
-  console.log("send to neural network: " + JSON.stringify(state));
+    console.log("send to neural network: " + JSON.stringify(state));
     var input = getInput(state);
 
-    if (state.score > lastState.score) {
-        net.train([{input: getInput(lastState), output: getOutput(state)}]);
-    }
+    // if (state.score > lastState.score) {
+    //     net.train([{input: getInput(lastState), output: getOutput(state)}]);
+    // }
 
-    var output = net.run(input);
+    //var output = net.run(input);
+
     lastState = state;
 
-    if (output[0] > output[1] && output[0] > output[2]) {
-        return -30;
+    var out;
+    console.log("state.direct: " + state.direct);
+    console.log("inputs: " + input);
+    if (state.direct > 0) {
+         if (input[0] > 30) {
+            out = 30;
+         } else if (input[0] > 0) {
+            out = 0;
+         } else {
+            out = -30;
+        }
+    } else {
+        if (input[2] > 30) {
+             out = 30;
+        } else if (input[2] > 0) {
+            out = 0;
+        } else {
+            out = -30;
+        }
     }
-    if (output[1] > output[2] && output[1] > output[0]) {
-        return 0;
-    }
+    console.log("out:" + out);
+    return out;
 
-    return 30;
+    // if (output[0] > output[1] && output[0] > output[2]) {
+    //     return -30;
+    // }
+    // if (output[1] > output[2] && output[1] > output[0]) {
+    //     return 0;
+    // }
+
+    // return 30;
 };
 
 module.exports = {
-  send: send
+    send: send
 };

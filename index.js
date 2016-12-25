@@ -6,21 +6,21 @@ var dataSender = require('./data-sender.js')
 
 var FILE_SERVER_PORT = 8080;
 
-dataSender.init();
+dataSender.init().then(function() {
+    fileServer(FILE_SERVER_PORT, function onFileRecieved(url) {
+        // Send screenshot to opencv.
+        var getDataPromise = fileHandler.handle(url);
 
-fileServer(FILE_SERVER_PORT, function onFileRecieved(url) {
-  // Send screenshot to opencv.
-  var getDataPromise = fileHandler.handle(url);
+        getDataPromise.then(function(data) {
+            // Send opencv data to neural network.
+            var result = neuralNetwork.send(data);
 
-  getDataPromise.then(function (data) {
-    // Send opencv data to neural network.
-    var result = neuralNetwork.send(data);
+            if (typeof (result) != "number") {
+                console.log("result is not a number.");
+            }
 
-    if (typeof (result) != "number") {
-      console.log("result is not a number.");
-    }
-
-    // Send neural network data to arduino.
-    dataSender.send(result);
-  })
+            // Send neural network data to arduino.
+            dataSender.send(result);
+        })
+    });
 });

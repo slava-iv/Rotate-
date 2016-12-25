@@ -15,13 +15,13 @@ var handle = function (url) {
       }
 
       var player = im.matchTemplate('./files/p1.jpg', 0);
-      console.log("x:" + player[1] + " y:" + player[2]);
+      //console.log("x:" + player[1] + " y:" + player[2]);
 
       var im_converted = im.clone();
 
       im_converted.convertGrayscale();
       im_converted.canny(0, 100);
-      im_converted.save('test.jpg');
+      //im_converted.save('test.jpg');
       im_converted.dilate(2);
 
       var contours = im_converted.findContours();
@@ -35,11 +35,11 @@ var handle = function (url) {
 
         var rect = contours.boundingRect(i);
 
-        console.log("rect: " + JSON.stringify(rect));
+        //console.log("rect: " + JSON.stringify(rect));
 
         // It is not a plate guys.
-        if (rect.width < 100 || rect.width > 160) {
-          console.log("is not a plate");
+        if (rect.width < 37 || rect.width > 60) {
+          //console.log("is not a plate");
           continue;
         }
 
@@ -55,11 +55,11 @@ var handle = function (url) {
           Math.pow(BROWN_PLATE_COLOR_AVG[1] - plateAvgColor[1], 2) +
           Math.pow(BROWN_PLATE_COLOR_AVG[2] - plateAvgColor[2], 2));
 
-        console.log("diff: " + difference);
+        //console.log("diff: " + difference);
 
         // It is a brown plate guys.
         if (difference <= MINIMAL_ALLOWED_DISTANCE) {
-          console.log("is brown plate");
+          //console.log("is brown plate");
           continue;
         }
 
@@ -71,9 +71,9 @@ var handle = function (url) {
         });
       }
 
-      im.save('out.jpg')
+      //im.save('out.jpg')
 
-      console.log("handle: " + url);
+      //console.log("handle: " + url);
 
       resolve(data);
     });

@@ -8,8 +8,8 @@ dataSender.init().then(function onInited() {
   console.log("Port inited.");
 
   setTimeout(function () {
-    dataSender.send(left);
-    console.log("Port send left: " + left);
+    dataSender.send(center);
+    console.log("Port send center: " + center);
   }, 5000);
 
   setTimeout(function () {
@@ -18,7 +18,7 @@ dataSender.init().then(function onInited() {
   }, 10000);
 
   setTimeout(function () {
-    dataSender.send(center);
-    console.log("Port send center: " + center);
+    dataSender.send(left);
+    console.log("Port send left: " + left);
   }, 15000);
 })
